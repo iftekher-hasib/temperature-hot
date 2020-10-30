@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="CityNameInput" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="SearchBtn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="icon" src="" alt="">
+            <h1 id="CityShow">Dhaka</h1>
+            <h3><span id="temperature">38.06</span>&deg;C</h3>
+            <h1 id="sky" class="lead">Clouds</h1>
+        </div>
+    </div>
+
+</body>
+<script>
+    const GetDataFromApi = city =>{
+        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=1a12aa33c4b6e0d20f37f4f0275e78f8`)
+            .then(res=> res.json())
+            .then(data => {
+            document.getElementById("CityShow").innerText=data.name || "City Not Found!";
+            document.getElementById("temperature").innerText=data.main.temp;
+            document.getElementById("sky").innerText=data.weather[0].main;
+            document.getElementById("icon").setAttribute('src', `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`)
+
+                console.log(data);
+            })
+    }
+    const getCity = document.getElementById('SearchBtn');
+    getCity.addEventListener('click', ()=>{
+        const cityName = document.getElementById('CityNameInput').value;
+        GetDataFromApi(cityName);
+    })
+</script>
+</html>
